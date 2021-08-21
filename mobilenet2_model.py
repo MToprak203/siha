@@ -5,9 +5,9 @@ class Ssd:
     CLASSES = {}
     CLASSES_LIST = []
 
-    def __init__(self, pb_path="..\\Processors\\SSD_V2\\ssd_mobilenet_v2\\frozen_inference_graph.pb",
-                 pbtxt_path="..\\Processors\\SSD_V2\\ssd_mobilenet_v2\\graph.pbtxt",
-                 coco_names_path="..\\Processors\\SSD_V2\\ssd_mobilenet_v2\\coco.names"):
+    def __init__(self, pb_path="ssd_mobilenet_v2/frozen_inference_graph.pb",
+                 pbtxt_path="ssd_mobilenet_v2/graph.pbtxt",
+                 coco_names_path="ssd_mobilenet_v2/coco.names"):
 
         self.read_coco(coco_names_path)
         self.net = cv2.dnn.readNetFromTensorflow(pb_path, pbtxt_path)

@@ -1,6 +1,10 @@
-import os
-import sys
+from MyUAVImageProcessor import MyUAVImageProcessor as imageProcessor
 
 
-current_dir = os.path.dirname(os.path.realpath(__file__))
-sys.path.insert(0, current_dir)
+def main():
+    image_processor = imageProcessor()
+    image_processor.display_screen()
+
+
+if __name__ == "__main__":
+    main()

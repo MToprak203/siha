@@ -1,13 +1,9 @@
 from Tools.MyTime import MyTime
-from Processors.SSD_V2.mobilenet2_model import Ssd as AIModel
-from Tools import ScreenSettings as settings
+from mobilenet2_model import Ssd as AIModel
+from Tools import ScreenSettings as Settings
 import cv2
 import time
 import math
-
-# Iha bu mesajları kullanarak bilgisayarla iletişim kuracak.
-# Bu mesajların olduğu yerlerde büyük ihtimalle bilgisayara gönderilmesi gereken
-# veya işlenmesi gereken önemli veriler de olacak.
 
 process_result_package = {
     "available_object": False,
@@ -34,6 +30,10 @@ def draw_box(img, box, color, thick):
     cv2.rectangle(img, (x, y), (x + w, y + h), color, thick)
 
 
+# Iha bu mesajları kullanarak bilgisayarla iletişim kuracak.
+# Bu mesajların olduğu yerlerde büyük ihtimalle bilgisayara gönderilmesi gereken
+# veya işlenmesi gereken önemli veriler de olacak.
+
 def NoAvailableObject(): return "There is No Available Object."
 
 
@@ -54,7 +54,7 @@ def ScreenTurnedOf(): return "Screen Turned Off"
 
 class Screen:
     def __init__(self):
-        self.screen = cv2.VideoCapture(settings.v_path)
+        self.screen = cv2.VideoCapture(Settings.v_path)
         self.frame = None
         self.timer = None
         self.screen_turn_on = True
@@ -64,12 +64,12 @@ class Screen:
         screen_available, img = self.screen.read()
         if screen_available:
             self.timer = time.time()
-            self.frame = cv2.resize(img, (settings.cam_width, settings.cam_height), interpolation=cv2.INTER_AREA)
+            self.frame = cv2.resize(img, (Settings.cam_width, Settings.cam_height), interpolation=cv2.INTER_AREA)
         return screen_available
 
     # Frame gösterilir. 'esc' ye basılırsa kamera kapatılır.
     def display_screen(self, display_speed=1):
-        draw_box(self.frame, settings.target_hit_area, (255, 0, 150), 2)
+        draw_box(self.frame, Settings.target_hit_area, (255, 0, 150), 2)
         print("FPS: ", 1 / (time.time() - self.timer))
         cv2.imshow("Camera", self.frame)
         if cv2.waitKey(display_speed) & 0xFF == 27:
@@ -105,12 +105,12 @@ def find_significant_obj(objects):
     target_found = False
 
     for obj in objects:
-        if obj[2] <= settings.min_target_width or obj[3] <= settings.min_target_height:
+        if obj[2] <= Settings.min_target_width or obj[3] <= Settings.min_target_height:
             continue
-        if obj[0] < settings.hit_area_points[0] or obj[1] < settings.hit_area_points[1]:
+        if obj[0] < Settings.hit_area_points[0] or obj[1] < Settings.hit_area_points[1]:
             n_objects.append(obj)
             continue
-        if obj[0] + obj[2] > settings.hit_area_points[2] or obj[1] + obj[3] > settings.hit_area_points[3]:
+        if obj[0] + obj[2] > Settings.hit_area_points[2] or obj[1] + obj[3] > Settings.hit_area_points[3]:
             n_objects.append(obj)
             continue
         h_objects.append(obj)
@@ -289,21 +289,21 @@ def targetRelativePosition(target):
     target_center_x = target[0] + target[2] / 2
     target_center_y = target[1] + target[3] / 2
 
-    target_movement_y_value = settings.center_point[0] - target_center_x
-    target_movement_z_value = settings.center_point[1] - target_center_y
+    target_movement_y_value = Settings.center_point[0] - target_center_x
+    target_movement_z_value = Settings.center_point[1] - target_center_y
 
-    if target_center_x is settings.center_point[0]:
+    if target_center_x is Settings.center_point[0]:
         process_result_package["target_movement_y_msg"] = "0"
-    elif target_center_x >= settings.center_point[0]:
+    elif target_center_x >= Settings.center_point[0]:
         process_result_package["target_movement_y_msg"] = "+y"
     else:
         process_result_package["target_movement_y_msg"] = "-y"
 
     process_result_package["target_movement_y_value"] = target_movement_y_value
 
-    if target_center_y is settings.center_point[1]:
+    if target_center_y is Settings.center_point[1]:
         process_result_package["target_movement_z_msg"] = "0"
-    elif target_center_y >= settings.center_point[1]:
+    elif target_center_y >= Settings.center_point[1]:
         process_result_package["target_movement_z_msg"] = "+z"
     else:
         process_result_package["target_movement_z_msg"] = "-z"

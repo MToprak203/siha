@@ -1,6 +1,6 @@
 # Kamera değerlerini tutar.
 
-v_path = "../Tools/Video/aeroplane.mp4" # Kamera için 0, video için "adres"
+v_path = "Tools/Video/aeroplane.mp4" # Kamera için 0, video için "adres"
 cam_width = 640
 cam_height = 480
 
