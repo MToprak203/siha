@@ -1,0 +1,15 @@
+* Flask ve requests kütüphanelerini yükle.
+
+* Haberleşme için kullanılacak classlar communication.py dosyasında mevcut.
+
+* API klasörünün içindeki app.py dosyası Yarışma sunucusunu simule eder.
+
+* İlk önce app.py dosyasını calistirip ardından test_api_server_comm.py dosyasını calistirirsan Server classinin calistigini test edebilirsin.
+
+* Receiver_TCP ve Transmitter_TCP classlari iki bilgisayar arasinda TCP-IP ile dosya aktarimi yapar ya da sadece mesaj gonderimi yapabilirsin.
+
+* Receiver_TCP ile alinan dosyalar ./files klasorunde olusur. "files" klasörü mevcut degilse manual olarak olustur.
+
+
+Update : 
+ * Video streaming eklendi.

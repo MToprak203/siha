@@ -1,0 +1,45 @@
+{
+ "sistemSaati": {
+ "saat": 6,
+ "dakika": 53,
+ "saniye": 42,
+ "milisaniye": 500
+ },
+ "konumBilgileri": [
+
+{
+ "takim_numarasi": 1,
+ "iha_enlem": 500,
+ "iha_boylam": 500,
+ "iha_irtifa": 500,
+ "iha_dikilme": 5,
+ "iha_yonelme": 256,
+ "iha_yatis": 0,
+ "zaman_farki": 93
+ },
+
+{
+ "takim_numarasi": 2,
+ "iha_enlem": 500,
+ "iha_boylam": 500,
+ "iha_irtifa": 500,
+ "iha_dikilme": 5,
+ "iha_yonelme": 256,
+ "iha_yatis": 0,
+ "zaman_farki": 74
+ },
+
+{
+ "takim_numarasi": 3,
+ "iha_enlem": 433.5,
+ "iha_boylam": 222.3,
+ "iha_irtifa": 222.3,
+ "iha_dikilme": 5,
+ "iha_yonelme": 256,
+ "iha_yatis": 0,
+ "zaman_farki": 43
+
+}
+
+]
+}
