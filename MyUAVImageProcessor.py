@@ -13,13 +13,17 @@ process_result_package = {
     "collision_possible": False,
     "target": None,
     "lock_time": None,
-    "target_movement_x_msg": "",
+    "target_movement_x_msg": "",  # "no_difference" | "moving_away" | "closing"
     "target_movement_x_value": 0,
-    "target_movement_y_msg": "",
+    "target_movement_y_msg": "",  # "0" | "-y" | "+y"
     "target_movement_y_value": 0,
-    "target_movement_z_msg": "",
+    "target_movement_z_msg": "",  # "0" | "-z" | "+z"
     "target_movement_z_value": 0,
 }
+
+
+def get_image_process_result_package():
+    return process_result_package
 
 
 def draw_box(img, box, color, thick):
@@ -265,7 +269,7 @@ def targetMovingAway(previous_target, current_target, dangerous_area_difference=
 
     prev_target_area = previous_target[2] * previous_target[3]
     curr_target_area = current_target[2] * current_target[3]
-    area_difference = curr_target_area - prev_target_area
+    area_difference = prev_target_area - curr_target_area
 
     process_result_package["target_movement_x_value"] = area_difference
 
@@ -289,8 +293,8 @@ def targetRelativePosition(target):
     target_center_x = target[0] + target[2] / 2
     target_center_y = target[1] + target[3] / 2
 
-    target_movement_y_value = Settings.center_point[0] - target_center_x
-    target_movement_z_value = Settings.center_point[1] - target_center_y
+    target_movement_y_value = target_center_x - Settings.center_point[0]
+    target_movement_z_value = target_center_y - Settings.center_point[1]
 
     if target_center_x is Settings.center_point[0]:
         process_result_package["target_movement_y_msg"] = "0"
@@ -304,9 +308,9 @@ def targetRelativePosition(target):
     if target_center_y is Settings.center_point[1]:
         process_result_package["target_movement_z_msg"] = "0"
     elif target_center_y >= Settings.center_point[1]:
-        process_result_package["target_movement_z_msg"] = "+z"
-    else:
         process_result_package["target_movement_z_msg"] = "-z"
+    else:
+        process_result_package["target_movement_z_msg"] = "+z"
 
     process_result_package["target_movement_z_value"] = target_movement_z_value
 
@@ -314,20 +318,19 @@ def targetRelativePosition(target):
 # serverdan gelen verilere göre kamera ile takip, hareket gibi işlemleri yapan yapı
 class MyUAVImageProcessor:
     def __init__(self):
-        self.screen = Screen()
         self.target_watching_processor = TargetWatchingProcessor()
         self.begin_process = True  # bilgisayardan gelecek olan görüntü işlemeyi başlat booleanı
         self.previous_target = None
         self.current_target = None
 
-    def process(self):
+    def process(self, frame):
         # Hazırlanan 'process_result_package' burada bilgisayara gönderilmeli. Aynı zamanda gelen bir target varsa,
         # ne olur ne olmaz kontrol etmekte fayda var, görüntüdeki konumunun bizim ihaya olan uzaklıklarını hesaplamayıp
         # bu uzaklıklarla hareket kodlarındaki takip fonksiyonuna ne yöne gitmesi gerektiğini söylememiz gerekiyor.
         # Bu kısımda sadece target'ı [x, y, w, h] olarak dönüyoruz. Hesaplamaları bilgisayarda ya da hareket kodlarında
         # yaparız.
 
-        target = self.target_watching_processor.process(self.screen.frame)
+        target = self.target_watching_processor.process(frame)
 
         if target:
             self.current_target = target
@@ -341,15 +344,3 @@ class MyUAVImageProcessor:
             targetRelativePosition(target)
             self.previous_target = target
             process_result_package["target"] = target
-
-    def display_screen(self):
-        while self.screen.update_screen():
-            if self.begin_process:
-                self.process()
-            print(process_result_package)
-            self.screen.display_screen()
-
-
-image_processor = MyUAVImageProcessor()
-image_processor.display_screen()
-# eğer kod eklemek istersen 'image_processor.display_screen' fonksiyonuna ekle. While'dan dolayı ulaşamazsın.

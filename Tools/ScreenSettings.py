@@ -12,3 +12,4 @@ target_view_size = (cam_width / 2, cam_height * 4 / 5)
 
 target_hit_area = (cam_width / 4, cam_height / 10, cam_width / 2, cam_height * 4 / 5)  # x1, y1, w, h
 hit_area_points = (cam_width / 4, cam_height / 10, cam_width * 3 / 4, cam_height * 9 / 10)  # x1, y1, x2, y2
+
